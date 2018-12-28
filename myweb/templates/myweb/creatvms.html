@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>虚机信息</title>
+    <link rel="stylesheet" type="text/css" href="/static/myweb/css/mystyle.css">
+</head>
+<body>
+<div>
+<ul>
+    <li><a href="/">主页</a> </li>
+    <li><a class="active" href="/vmsinfo">虚机</a> </li>
+    <li><a href="/contact">联系</a></li>
+    <li style="float: right"><a href="/about">关于</a> </li>
+</ul>
+    <div class="leftmenu"></div>
+    <div class="container">
+        <p style="text-align: center; font-size: 50px; font-family: 'Trebuchet MS'">虚机创建信息</p>
+        <table border="1px" style="margin: auto; padding-top: 50px;border-collapse: collapse; width: 1000px">
+            <tr style="background-color: #333333">
+                <th style="color: white">IP地址</th>
+                <th style="color: white">业务</th>
+                <th style="color: white">部门</th>
+                <th style="color: white">业务接口人</th>
+                <th style="color: white">运维接口人</th>
+                <th style="color: white">创建时间</th>
+                <th style="color: white">到期时间</th>
+            </tr>
+            {% for vm in vmsinfo %}
+            <tr>
+                {% for info in vm %}
+                    <td>{{ info }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="yejiao"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>web learning</title>
+    <link rel="stylesheet" type="text/css" href="/static/myweb/css/mystyle.css">
+    <script type="text/javascript" src="/static/myweb/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/myweb/js/highcharts.js"></script>
+    <script type="text/javascript">
+        function check() {
+            if($("#ipaddr").val()==""){
+                alert("请输入IP地址");
+                return false
+            }
+            if($("#yewu").val()==""){
+                alert("请输入业务名称");
+                return false
+            }
+            if($("#sqbm").val()==""){
+                alert("请输入申请部门");
+                return false
+            }
+            if($("#yewjkr").val()==""){
+                alert("请输入业务接口人");
+                return false
+            }
+            if($("#yunwjkr").val()==""){
+                alert("请输入运维接口人");
+                return false
+            }
+            if($("#crtime").val()==""){
+                alert("请输入创建时间");
+                return false
+            }
+            if($("#entime").val()==""){
+                alert("请输入到期时间");
+                return false
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+<div>
+<div>
+<ul>
+    <li><a class="active" href=" ">主页</a> </li>
+    <li><a href="/vmsinfo">虚机</a> </li>
+    <li><a href="/contact">联系</a></li>
+    <li style="float: right"><a href="/about/">关于</a> </li>
+</ul>
+</div>
+<div class="leftmenu"></div>
+<div class="container">
+    <div id="container" style="width: 550px; height: 400px; margin: 0 auto">
+        <script language="JavaScript">
+            var data = [{{ series|safe }}]
+        $(document).ready(function() {
+           var chart = {
+              type: 'column'
+           };
+           var title = {
+              text: '工作统计'
+           };
+           var subtitle = {
+              text: '数据来源: IDC'
+           };
+           var xAxis = {
+              categories: ['虚机创建个数','虚机变更次数','故障处理次数'],
+              crosshair: true
+           };
+           var yAxis = {
+              min: 0,
+              title: {
+                 text: '次数统计 (次)'
+              }
+           };
+           var tooltip = {
+              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                 '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+              footerFormat: '</table>',
+              shared: true,
+              useHTML: true
+           };
+           var plotOptions = {
+              column: {
+                 pointPadding: 0.2,
+                 borderWidth: 0
+              }
+           };
+           var credits = {
+              enabled: false
+           };
+
+           var json = {};
+           json.chart = chart;
+           json.title = title;
+           json.subtitle = subtitle;
+           json.tooltip = tooltip;
+           json.xAxis = xAxis;
+           json.yAxis = yAxis;
+           json.series = data;
+           json.plotOptions = plotOptions;
+           json.credits = credits;
+           $('#container').highcharts(json);
+
+        });
+        </script>
+    </div>
+    <div style="margin-top: 20px; margin-left: 40%">
+    <form action="/insertdata" method="get" onsubmit="return check()">
+        <table>
+            <tr>
+                <td>IP地址:</td>
+                <td><input name="ip" type="text" id="ipaddr"></td>
+            </tr>
+            <tr>
+                <td>业务名称:</td>
+                <td><input name="yewu" type="text" id="yewu"></td>
+            </tr>
+            <tr>
+                <td>申请部门:</td>
+                <td><input name="bumen" type="text" id="sqbm"></td>
+            </tr>
+            <tr>
+                <td>业务接口人：</td>
+                <td><input name="yewujkr" type="text" id="yewjkr"></td>
+            </tr>
+            <tr>
+                <td>运维接口人：</td>
+                <td><input name="yunweijkr" type="text" id="yunwjkr"></td>
+            </tr>
+            <tr>
+                <td>开通时间：</td>
+                <td><input name="ctime" type="date" id="crtime"></td>
+            </tr>
+            <tr>
+                <td>到期时间：</td>
+                <td><input name="etime" type="date" id="entime"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input style="width: 100px; height: 30px; background-color: cornflowerblue; float: right" type="submit" value="提交"></td>
+            </tr>
+        </table>
+    </form>
+    </div>
+</div>
+<div class="yejiao"><p style="color: white; text-align: center; bottom: 20px">copy@laiyuan</p> </div>
+</div>
+</body>
+</html>
