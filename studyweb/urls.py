@@ -25,4 +25,6 @@ urlpatterns = [
     path('about/', views.about),
     path('insertdata/', views.insertdata),
     path('hg/', views.get_hight_info),
+    path('dealevent/', views.insert_deal_event),
+    path('vmchange/', views.insert_vmchange),
 ]

@@ -35,6 +35,7 @@ class execmysql():
             cursor.execute(SQL)
             result = cursor.fetchall()
             vmsinfo = []
+            ips = []
             for row in result:
                 vminfo = []
                 vminfo.append(row[1])
@@ -45,13 +46,15 @@ class execmysql():
                 vminfo.append(row[6])
                 vminfo.append(row[7])
                 vmsinfo.append(vminfo)
+                ips.append(row[1])
         except:
             print("Some this is error!")
 
         db.close()
-        return vmsinfo
+        info = [vmsinfo, ips]
+        return info
 
-    #插入数据
+    #插入开通虚机信息数据
     def insert_data(self, IP, YW, BM, SN, YN, CT, ET):
         db = self.connectdb()
         cursor = db.cursor()
@@ -66,7 +69,31 @@ class execmysql():
             db.rollback()
         db.close()
 
+    #插入故障处理信息
+    def insert_deal_event(self, ip, event, dealtime):
+        db = self.connectdb()
+        cursor = db.cursor()
+        sql = "INSERT INTO DealThing(IP, EVENT, CUTIME) VALUES ('%s', '%s', '%s')" % (ip, event, dealtime)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except BaseException as e:
+            print("出现错误：%s" %e)
+            db.rollback()
+        db.close()
 
+    #插入变更信息
+    def insert_vmchange(self, ip, event, bgtime):
+        db = self.connectdb()
+        cursor = db.cursor()
+        sql = "INSERT INTO VMChange(IP, EVENT, BGTIME) VALUES ('%s', '%s', '%s')" % (ip, event, bgtime)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except BaseException as e:
+            print("出现错误：%s" %e)
+            db.rollback()
+        db.close()
 
 
 if __name__ == '__main__':

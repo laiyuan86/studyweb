@@ -18,7 +18,9 @@ def index(request):
         ]
     }
     json_data = json.dumps(data, separators=(',', ':'))
-    return render(request, 'myweb/index.html', {'series': json_data})
+    ips = execmysql(host, user, password, db).search_data()[1]
+
+    return render(request, 'myweb/index.html', {'series': json_data, 'ips': ips})
 
 
 def about(request):
@@ -44,7 +46,7 @@ def insertdata(request):
 
 
 def get_cvms_info(request):
-    vmsinfo = execmysql(host, user, password, db).search_data()
+    vmsinfo = execmysql(host, user, password, db).search_data()[0]
     return render(request, "myweb/creatvms.html", {'vmsinfo': vmsinfo})
 
 
@@ -59,6 +61,26 @@ def get_hight_info(request):
     }
     json_data = json.dumps(data, separators=(',', ':'))
     return render(request, "myweb/highchart.html", {'series': json_data})
+
+
+def insert_deal_event(request):
+    deal_event = []
+    res = request.GET.items()
+    for i in res:
+        deal_event.append(i[1])
+    exmysql = execmysql(host, user, password, db)
+    exmysql.insert_deal_event(deal_event[0], deal_event[2], deal_event[1])
+    return HttpResponse("插入成功")
+
+
+def insert_vmchange(request):
+    vmchange = []
+    res = request.GET.items()
+    for i in res:
+        vmchange.append(i[1])
+    exmysql = execmysql(host, user, password, db)
+    exmysql.insert_vmchange(vmchange[0], vmchange[2], vmchange[1])
+    return HttpResponse("插入成功")
 
 
 if __name__ == '__main__':

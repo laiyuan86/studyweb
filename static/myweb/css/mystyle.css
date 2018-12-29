@@ -64,25 +64,3 @@ li a:hover{
     background-color: #4CAF50;
     cursor: pointer; /*鼠标放上去后显示的图标*/
 }
-
-.pie {
-    margin-top: 100px;
-    margin-left: 20%;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;   /*添加圆角*/
-    background: dodgerblue;
-    background-image: linear-gradient(to right, transparent 50%, #655 0);
-}
-
-/*伪类属性 :before 在.pie属性元素之前插入内容*/
-.pie::before {
-    content: '';
-    display: block;
-    margin-left: 50%;
-    height: 100%;
-    background: dodgerblue;
-    border-radius: 0 100% 100% 0/50%;
-    transform-origin: left;  /*设置旋转元素的基点位置*/
-    transform: rotate(36deg);
-}
