@@ -91,9 +91,36 @@ class execmysql():
             cursor.execute(sql)
             db.commit()
         except BaseException as e:
-            print("出现错误：%s" %e)
+            print("出现错误：%s" % e)
             db.rollback()
         db.close()
+
+
+    #获取表中数据条数
+    def get_events_nums(self):
+        db = self.connectdb()
+        cursor = db.cursor()
+        vmcreate_sql = "SELECT COUNT(*) FROM CreateVM"
+        dealthing_sql = "SELECT COUNT(*) FROM DealThing"
+        vmchange_sql = "SELECT COUNT(*) FROM VMChange"
+        nums = []
+        try:
+            cursor.execute(vmcreate_sql)
+            vmcreate_nums = cursor.fetchone()
+            nums.append(vmcreate_nums[0])
+            cursor.execute(dealthing_sql)
+            dealthing_nums = cursor.fetchone()
+            nums.append(dealthing_nums[0])
+            cursor.execute(vmchange_sql)
+            vmchange_nums = cursor.fetchone()
+            nums.append(vmchange_nums[0])
+        except BaseException as e:
+            print("出现错误：%s" % e)
+        db.close()
+
+        print(nums)
+        return nums
+
 
 
 if __name__ == '__main__':
@@ -102,4 +129,4 @@ if __name__ == '__main__':
     password = 'qwe123'
     db = 'studyweb'
     exmysql = execmysql(host, user, password, db)
-    exmysql.search_data()
+    exmysql.get_events_nums()

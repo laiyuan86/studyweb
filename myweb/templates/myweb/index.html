@@ -2,11 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>web learning</title>
+    <title>数据中心资源统计</title>
     <link rel="stylesheet" type="text/css" href="/static/myweb/css/mystyle.css">
+    <link rel="stylesheet" href="/static/myweb/css/jquery-ui.css">
+    <link rel="stylesheet" href="/static/myweb/css/style.css">
     <script type="text/javascript" src="/static/myweb/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/static/myweb/js/highcharts.js"></script>
+    <script type="text/javascript" src="/static/myweb/js/jquery-ui.js"></script>
     <script type="text/javascript">
+        $(function () {
+            $("#createtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#endtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#dealtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#changetime").datepicker({dateFormat: "yy-mm-dd"});
+        })
         function check() {
             if($("#ipaddr").val()==""){
                 alert("请输入IP地址");
@@ -28,11 +43,11 @@
                 alert("请输入运维接口人");
                 return false
             }
-            if($("#crtime").val()==""){
+            if($("#createtime").val()==""){
                 alert("请输入创建时间");
                 return false
             }
-            if($("#entime").val()==""){
+            if($("#endtime").val()==""){
                 alert("请输入到期时间");
                 return false
             }
@@ -50,7 +65,7 @@
             return true;
         }
         function check2() {
-            if($('#bgtime').val()==""){
+            if($('#changetime').val()==""){
                 alert("请输入变更机器IP地址");
                 return false
             }
@@ -88,7 +103,7 @@
               text: '数据来源: IDC'
            };
            var xAxis = {
-              categories: ['虚机创建个数','虚机变更次数','故障处理次数'],
+              categories: ['虚机创建个数','故障处理次数','虚机变更次数'],
               crosshair: true
            };
            var yAxis = {
@@ -156,11 +171,11 @@
             </tr>
             <tr>
                 <td>开通时间：</td>
-                <td><input name="ctime" type="date" id="crtime"></td>
+                <td><input name="ctime" type="date" id="createtime"></td>
             </tr>
             <tr>
                 <td>到期时间：</td>
-                <td><input name="etime" type="date" id="entime"></td>
+                <td><input name="etime" type="date" id="endtime"></td>
             </tr>
             <tr>
                 <td></td>
@@ -212,7 +227,7 @@
             </tr>
             <tr>
                 <td>变更时间：</td>
-                <td><input name="bgtime" type="date" id="bgtime" style="width: 200px"></td>
+                <td><input name="bgtime" type="date" id="changetime" style="width: 200px"></td>
             </tr>
             <tr>
                 <td>变更详情:</td>

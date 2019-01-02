@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .dbhelp import execmysql
 import time, json
 
@@ -9,16 +9,14 @@ from .config import *
 
 
 def index(request):
+    exmysql = execmysql(host, user, password, db)
+    nums = exmysql.get_events_nums()
     data = {
         'name': '本周工作量',
-        'data': [
-            80,
-            40,
-            20
-        ]
+        'data': nums
     }
     json_data = json.dumps(data, separators=(',', ':'))
-    ips = execmysql(host, user, password, db).search_data()[1]
+    ips = exmysql.search_data()[1]
 
     return render(request, 'myweb/index.html', {'series': json_data, 'ips': ips})
 
@@ -42,7 +40,7 @@ def insertdata(request):
         cvminfo.append(i[1])
     exmysql = execmysql(host, user, password, db)
     exmysql.insert_data(cvminfo[0], cvminfo[1], cvminfo[2], cvminfo[3], cvminfo[4], cvminfo[5], cvminfo[6])
-    return HttpResponse("<h1>提交成功</h1>")
+    return HttpResponseRedirect('/')
 
 
 def get_cvms_info(request):
@@ -70,7 +68,7 @@ def insert_deal_event(request):
         deal_event.append(i[1])
     exmysql = execmysql(host, user, password, db)
     exmysql.insert_deal_event(deal_event[0], deal_event[2], deal_event[1])
-    return HttpResponse("插入成功")
+    return HttpResponseRedirect('/')
 
 
 def insert_vmchange(request):
@@ -80,7 +78,11 @@ def insert_vmchange(request):
         vmchange.append(i[1])
     exmysql = execmysql(host, user, password, db)
     exmysql.insert_vmchange(vmchange[0], vmchange[2], vmchange[1])
-    return HttpResponse("插入成功")
+    return HttpResponseRedirect('/')
+
+
+def time_select(request):
+    return render(request, 'myweb/times.html')
 
 
 if __name__ == '__main__':
