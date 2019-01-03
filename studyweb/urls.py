@@ -21,11 +21,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
     path('vmsinfo/', views.get_cvms_info),
-    path('contact', views.contact),
+    path('add/', views.add_event),
     path('about/', views.about),
     path('insertdata/', views.insertdata),
     path('hg/', views.get_hight_info),
     path('dealevent/', views.insert_deal_event),
     path('vmchange/', views.insert_vmchange),
-    path('time/', views.time_select),
+    path('getfile/', views.get_files),
 ]

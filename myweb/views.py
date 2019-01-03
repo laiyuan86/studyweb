@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_protect
 from .dbhelp import execmysql
-import time, json
+import time
+import json
+import os
+import csv
 
 from .config import *
 
@@ -10,7 +14,17 @@ from .config import *
 
 def index(request):
     exmysql = execmysql(host, user, password, db)
-    nums = exmysql.get_events_nums()
+    setimes = []
+    rectime = request.GET.items()
+    for i in rectime:
+        setimes.append(i[1])
+    if setimes:
+        if setimes[0]:
+            nums = exmysql.get_events_nums_date(*setimes)
+        else:
+            nums = exmysql.get_events_nums()
+    else:
+        nums = exmysql.get_events_nums()
     data = {
         'name': '本周工作量',
         'data': nums
@@ -29,8 +43,10 @@ def news(request):
     return render(request, 'myweb/creatvms.html')
 
 
-def contact(request):
-    return render(request, 'myweb/contact.html')
+def add_event(request):
+    exmysql = execmysql(host, user, password, db)
+    ips = exmysql.search_data()[1]
+    return render(request, 'myweb/add.html', {'ips': ips})
 
 
 def insertdata(request):
@@ -81,9 +97,31 @@ def insert_vmchange(request):
     return HttpResponseRedirect('/')
 
 
-def time_select(request):
-    return render(request, 'myweb/times.html')
+@csrf_protect
+def get_files(request):
+    if request.method == 'POST':
+        ret = {'status': False, 'data': None, 'error': None}
+        try:
+            rcfile = request.FILES.get('uploadfile')
+            f = open(os.path.join('static', rcfile.name), 'wb')
+            for chunk in rcfile.chunks(chunk_size=1024):
+                print(chunk)
+                f.write(chunk)
+            ret['status'] = True
+            ret['data'] = os.path.join('static', rcfile.name)
+        except Exception as e:
+            ret['error'] = e
+        finally:
+            f.close()
+            csv_file = csv.reader(open(os.path.join('static', rcfile.name), 'r'))
+            print(csv_file)
+            exmysql = execmysql(host, user, password, db)
+            for vminfo in csv_file:
+                print(vminfo)
+                exmysql.insert_data(vminfo[0], vminfo[1], vminfo[2], vminfo[3], vminfo[4], vminfo[5], vminfo[6] )
+            return HttpResponseRedirect('/vmsinfo/')
+    return render(request, 'myweb/add.html')
 
 
 if __name__ == '__main__':
-    insertdata()
+    pass

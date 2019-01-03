@@ -121,6 +121,32 @@ class execmysql():
         print(nums)
         return nums
 
+    #按日期范围查找
+    def get_events_nums_date(self, *setimes):
+        db = self.connectdb()
+        cursor = db.cursor()
+        startime = setimes[0]
+        overtime = setimes[1]
+        vmcreate_sql = "SELECT COUNT(*) FROM CreateVM WHERE date(CTIME) BETWEEN '%s' AND '%s'" % (startime, overtime)
+        dealthing_sql = "SELECT COUNT(*) FROM DealThing WHERE date(CUTIME) BETWEEN '%s' AND '%s'" % (startime, overtime)
+        vmchange_sql = "SELECT COUNT(*) FROM VMChange WHERE date(BGTIME) BETWEEN '%s' AND '%s'" % (startime, overtime)
+        nums = []
+        try:
+            cursor.execute(vmcreate_sql)
+            vmcreate_nums = cursor.fetchone()
+            nums.append(vmcreate_nums[0])
+            cursor.execute(dealthing_sql)
+            dealthing_nums = cursor.fetchone()
+            nums.append(dealthing_nums[0])
+            cursor.execute(vmchange_sql)
+            vmchange_nums = cursor.fetchone()
+            nums.append(vmchange_nums[0])
+        except BaseException as e:
+            print("出现错误：%s" % e)
+        db.close()
+
+        print(nums)
+        return nums
 
 
 if __name__ == '__main__':
@@ -128,5 +154,5 @@ if __name__ == '__main__':
     user = 'root'
     password = 'qwe123'
     db = 'studyweb'
+    setimes = ['2019-01-01', '2019-01-03']
     exmysql = execmysql(host, user, password, db)
-    exmysql.get_events_nums()

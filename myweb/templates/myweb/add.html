@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>录入</title>
+    <link rel="stylesheet" type="text/css" href="/static/myweb/css/mystyle.css">
+    <link rel="stylesheet" href="/static/myweb/css/jquery-ui.css">
+    <link rel="stylesheet" href="/static/myweb/css/style.css">
+    <script type="text/javascript" src="/static/myweb/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/myweb/js/highcharts.js"></script>
+    <script type="text/javascript" src="/static/myweb/js/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#createtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#endtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#dealtime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        $(function () {
+            $("#changetime").datepicker({dateFormat: "yy-mm-dd"});
+        })
+        function check() {
+            if($("#ipaddr").val()==""){
+                alert("请输入IP地址");
+                return false
+            }
+            if($("#yewu").val()==""){
+                alert("请输入业务名称");
+                return false
+            }
+            if($("#sqbm").val()==""){
+                alert("请输入申请部门");
+                return false
+            }
+            if($("#yewjkr").val()==""){
+                alert("请输入业务接口人");
+                return false
+            }
+            if($("#yunwjkr").val()==""){
+                alert("请输入运维接口人");
+                return false
+            }
+            if($("#createtime").val()==""){
+                alert("请输入创建时间");
+                return false
+            }
+            if($("#endtime").val()==""){
+                alert("请输入到期时间");
+                return false
+            }
+            return true;
+        }
+        function check1() {
+            if($('#dealtime').val()==""){
+                alert("请输入处理时间");
+                return false
+            }
+            if($("#guzhangxq").val()==""){
+                alert("请输入故障详情");
+                return false
+            }
+            return true;
+        }
+        function check2() {
+            if($('#changetime').val()==""){
+                alert("请输入变更机器IP地址");
+                return false
+            }
+            if($('#biangengxq').val()==""){
+                alert("请输入变更详情");
+                return false
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <ul>
+        <li><a href="/">主页</a> </li>
+        <li><a href="/vmsinfo">虚机</a> </li>
+        <li><a class="active" href="/add">录入</a></li>
+        <li style="float: right"><a href="/about">关于</a> </li>
+    </ul>
+    <div class="container">
+        <h1 style="text-align: center; font-family: 'Trebuchet MS'">信息录入页面</h1>
+        <div style="height: 280px; width: 100%">
+            <div style="background-color: #333333; height: 30px; width: 20%; margin-left: 5px">
+                <p style="font-size: 15px; text-align: center; color: white">添加虚机创建信息</p>
+            </div>
+            <div style="float: right; margin-top: 100px; padding-right: 200px">
+                <form action="/getfile/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="uploadfile">
+                    <input style="width: 100px; height: 30px; background-color: #333333; float: right; color: white" type="submit" value="导入文件">
+                </form>
+            </div>
+            <div style="padding-left: 200px; margin-top: 30px">
+                <form action="/insertdata" method="get" onsubmit="return check()">
+                    <table>
+                        <tr>
+                            <td style="width: 100px">IP地址:</td>
+                            <td><input name="ip" type="text" id="ipaddr" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">业务名称:</td>
+                            <td><input name="yewu" type="text" id="yewu" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">申请部门:</td>
+                            <td><input name="bumen" type="text" id="sqbm" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">业务接口人：</td>
+                            <td><input name="yewujkr" type="text" id="yewjkr" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">运维接口人：</td>
+                            <td><input name="yunweijkr" type="text" id="yunwjkr" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">开通时间：</td>
+                            <td><input name="ctime" type="date" id="createtime" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">到期时间：</td>
+                            <td><input name="etime" type="date" id="endtime" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input style="width: 100px; height: 30px; background-color: #333333; float: right; color: white" type="submit" value="提交"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div style="height: 240px">
+            <div style="background-color: #333333; height: 30px; width: 20%; margin-left: 5px">
+                <p style="font-size: 15px; text-align: center; color: white">添加处理故障信息</p>
+            </div>
+            <div style="float: left; padding-left: 200px; padding-top: 30px">
+                <form action="/dealevent" method="get"  onsubmit="return check1()">
+                    <table>
+                        <tr>
+                            <td style="width: 100px">IP地址:</td>
+                            <td>
+                            <select name="sipo">
+                                {% for ip in ips %}
+                                <option style="width: 200px">{{ ip }}</option>
+                                {% endfor %}
+                            </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">处理时间：</td>
+                            <td><input name="dealtime" type="date", id="dealtime" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">故障详情:</td>
+                            <td><input name="guzhang" type="text" id="guzhangxq" style="width: 200px; height: 100px"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input style="width: 100px; height: 30px; background-color: #333333; float: right; color: white" type="submit" value="提交"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div style="float: right; padding-right: 200px; padding-top: 30px">
+                <form action="/vmchange" method="get" onsubmit="return check2()">
+                    <table>
+                        <tr>
+                             <td style="width: 100px">IP地址:</td>
+                             <td>
+                                 <select name="vmch">
+                                {% for ip in ips %}
+                                <option style="width: 200px">{{ ip }}</option>
+                                {% endfor %}
+                                </select>
+                             </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">变更时间：</td>
+                            <td><input name="bgtime" type="date" id="changetime" style="width: 200px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px">变更详情:</td>
+                            <td><input name="bgxq" type="text" id="biangengxq" style="width: 200px; height: 100px"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input style="width: 100px; height: 30px; background-color: #333333; float: right; color: white" type="submit" value="提交"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="leftmenu"></div>
+    <div class="yejiao"></div>
+</div>
+</body>
+</html>

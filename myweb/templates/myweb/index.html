@@ -11,70 +11,11 @@
     <script type="text/javascript" src="/static/myweb/js/jquery-ui.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("#createtime").datepicker({dateFormat: "yy-mm-dd"});
+            $("#startime").datepicker({dateFormat: "yy-mm-dd"});
         })
         $(function () {
-            $("#endtime").datepicker({dateFormat: "yy-mm-dd"});
+            $("#overtime").datepicker({dateFormat: "yy-mm-dd"});
         })
-        $(function () {
-            $("#dealtime").datepicker({dateFormat: "yy-mm-dd"});
-        })
-        $(function () {
-            $("#changetime").datepicker({dateFormat: "yy-mm-dd"});
-        })
-        function check() {
-            if($("#ipaddr").val()==""){
-                alert("请输入IP地址");
-                return false
-            }
-            if($("#yewu").val()==""){
-                alert("请输入业务名称");
-                return false
-            }
-            if($("#sqbm").val()==""){
-                alert("请输入申请部门");
-                return false
-            }
-            if($("#yewjkr").val()==""){
-                alert("请输入业务接口人");
-                return false
-            }
-            if($("#yunwjkr").val()==""){
-                alert("请输入运维接口人");
-                return false
-            }
-            if($("#createtime").val()==""){
-                alert("请输入创建时间");
-                return false
-            }
-            if($("#endtime").val()==""){
-                alert("请输入到期时间");
-                return false
-            }
-            return true;
-        }
-        function check1() {
-            if($('#dealtime').val()==""){
-                alert("请输入处理时间");
-                return false
-            }
-            if($("#guzhangxq").val()==""){
-                alert("请输入故障详情");
-                return false
-            }
-            return true;
-        }
-        function check2() {
-            if($('#changetime').val()==""){
-                alert("请输入变更机器IP地址");
-                return false
-            }
-            if($('#biangengxq').val()==""){
-                alert("请输入变更详情");
-                return false
-            }
-            return true;
-        }
     </script>
 </head>
 <body>
@@ -83,12 +24,19 @@
 <ul>
     <li><a class="active" href=" ">主页</a> </li>
     <li><a href="/vmsinfo">虚机</a> </li>
-    <li><a href="/contact">联系</a></li>
+    <li><a href="/add">录入</a></li>
     <li style="float: right"><a href="/about/">关于</a> </li>
 </ul>
 </div>
 <div class="leftmenu"></div>
-<div class="container">
+<div class="container" style="margin-top: 100px">
+    <div style="float: right; margin-top: 320px; margin-right: 150px">
+        <form>
+            <p>开始时间：<input name="startime" type="date" id="startime"></p>
+            <p>结束时间：<input name="overtime" type="date" id="overtime"></p>
+            <input type="submit" style="float: right; width: 100px; height: 30px; background-color: cornflowerblue" value="查询">
+        </form>
+    </div>
     <div id="container" style="width: 800px; height: 500px; margin: 0 auto">
         <script language="JavaScript">
             var data = [{{ series|safe }}]
@@ -144,102 +92,6 @@
 
         });
         </script>
-    </div>
-    <div style="margin-top: 50px; height: 500px">
-    <div style="margin-bottom: 20px; margin-left: 100px; float: left">
-    <form action="/insertdata" method="get" onsubmit="return check()">
-        <table>
-            <tr>
-                <td>IP地址:</td>
-                <td><input name="ip" type="text" id="ipaddr"></td>
-            </tr>
-            <tr>
-                <td>业务名称:</td>
-                <td><input name="yewu" type="text" id="yewu"></td>
-            </tr>
-            <tr>
-                <td>申请部门:</td>
-                <td><input name="bumen" type="text" id="sqbm"></td>
-            </tr>
-            <tr>
-                <td>业务接口人：</td>
-                <td><input name="yewujkr" type="text" id="yewjkr"></td>
-            </tr>
-            <tr>
-                <td>运维接口人：</td>
-                <td><input name="yunweijkr" type="text" id="yunwjkr"></td>
-            </tr>
-            <tr>
-                <td>开通时间：</td>
-                <td><input name="ctime" type="date" id="createtime"></td>
-            </tr>
-            <tr>
-                <td>到期时间：</td>
-                <td><input name="etime" type="date" id="endtime"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input style="width: 100px; height: 30px; background-color: cornflowerblue; float: right" type="submit" value="提交"></td>
-            </tr>
-        </table>
-    </form>
-    </div>
-    <div style="margin-bottom: 20px; float: left; margin-left: 15%">
-    <form action="/dealevent" method="get"  onsubmit="return check1()">
-        <table>
-            <tr>
-                <td>IP地址:</td>
-                <td>
-                <select name="sipo">
-                    {% for ip in ips %}
-                    <option style="width: 200px">{{ ip }}</option>
-                    {% endfor %}
-                </select>
-                </td>
-            </tr>
-            <tr>
-                <td>处理时间：</td>
-                <td><input name="dealtime" type="date", id="dealtime" style="width: 200px"></td>
-            </tr>
-            <tr>
-                <td>故障详情:</td>
-                <td><input name="guzhang" type="text" id="guzhangxq" style="width: 200px; height: 100px"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input style="width: 100px; height: 30px; background-color: cornflowerblue; float: right" type="submit" value="提交"></td>
-            </tr>
-        </table>
-    </form>
-    </div>
-    <div style="margin-bottom: 20px; float: right; margin-right: 10%">
-    <form action="/vmchange" method="get" onsubmit="return check2()">
-        <table>
-            <tr>
-                <td>IP地址:</td>
-                 <td>
-                     <select name="vmch">
-                    {% for ip in ips %}
-                    <option style="width: 200px">{{ ip }}</option>
-                    {% endfor %}
-                    </select>
-                 </td>
-            </tr>
-            <tr>
-                <td>变更时间：</td>
-                <td><input name="bgtime" type="date" id="changetime" style="width: 200px"></td>
-            </tr>
-            <tr>
-                <td>变更详情:</td>
-                <td><input name="bgxq" type="text" id="biangengxq" style="width: 200px; height: 100px"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input style="width: 100px; height: 30px; background-color: cornflowerblue; float: right" type="submit" value="提交"></td>
-            </tr>
-        </table>
-    </form>
-    </div>
     </div>
 </div>
 <div class="yejiao"><p style="color: white; text-align: center; bottom: 20px">copy@laiyuan</p> </div>
