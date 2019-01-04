@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vmdetail</title>
+</head>
+<body>
+<table align="center" border="1px" style="border-collapse: collapse; margin-top: 20px">
+    <tr style="background-color: #333333">
+        <th style="color: white; width: 120px">IP地址</th>
+        <th style="color: white; width: 120px">业务</th>
+        <th style="color: white; width: 120px">部门</th>
+        <th style="color: white; width: 120px">业务接口人</th>
+        <th style="color: white; width: 120px">运维接口人</th>
+        <th style="color: white; width: 120px">创建时间</th>
+        <th style="color: white; width: 120px">到期时间</th>
+    </tr>
+    <tr>
+    {% if vminfo %}
+        {% for info in vminfo %}
+            <td style="width: 120px">{{ info }}</td>
+        {% endfor %}
+    {% else %}
+        <h2 align="center" style="color: red;">没有该记录</h2>
+    {% endif %}
+    </tr>
+</table>
+</body>
+</html>

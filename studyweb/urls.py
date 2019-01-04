@@ -28,4 +28,6 @@ urlpatterns = [
     path('dealevent/', views.insert_deal_event),
     path('vmchange/', views.insert_vmchange),
     path('getfile/', views.get_files),
+    path('table/', views.table_fy),
+    path('searchip/', views.search_ip),
 ]

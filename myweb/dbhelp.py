@@ -148,6 +148,29 @@ class execmysql():
         print(nums)
         return nums
 
+    #按IP查询
+    def get_vminfo_forip(self, ip):
+        db = self.connectdb()
+        cursor = db.cursor()
+        sql = "SELECT * FROM CreateVM WHERE IP = '%s'" % ip
+        vminfo = []
+        try:
+            cursor.execute(sql)
+            res = cursor.fetchall()
+            vminfo.append(res[0][1])
+            vminfo.append(res[0][2])
+            vminfo.append(res[0][3])
+            vminfo.append(res[0][4])
+            vminfo.append(res[0][5])
+            vminfo.append(res[0][6])
+            vminfo.append(res[0][7])
+        except BaseException as e:
+            vminfo = None
+            print("出现错误：%s" % e)
+            return vminfo
+        db.close()
+        return vminfo
+
 
 if __name__ == '__main__':
     host = '127.0.0.1'
@@ -156,3 +179,4 @@ if __name__ == '__main__':
     db = 'studyweb'
     setimes = ['2019-01-01', '2019-01-03']
     exmysql = execmysql(host, user, password, db)
+    exmysql.get_vminfo_forip('172.24.132.185')

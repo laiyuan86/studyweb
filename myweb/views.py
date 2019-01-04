@@ -123,5 +123,16 @@ def get_files(request):
     return render(request, 'myweb/add.html')
 
 
+def table_fy(request):
+    return render(request, "myweb/tablefy.html")
+
+
+def search_ip(request):
+    ip = request.GET.get('ip')
+    exmysql = execmysql(host, user, password, db)
+    vminfo = exmysql.get_vminfo_forip(ip)
+    return render(request, "myweb/vmdetail.html", {'vminfo': vminfo})
+
+
 if __name__ == '__main__':
     pass
